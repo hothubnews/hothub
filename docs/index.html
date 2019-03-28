@@ -1,1 +1,92 @@
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>hothub</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <script type="text/javascript">
+    ;(function(win, lib) {
+        var doc = win.document;
+        var docEl = doc.documentElement;
+        var dpr = 1;
+        var scale = 1;
+        var tid;
+        var flexible = lib.flexible || (lib.flexible = {});
+        function refreshRem() {
+            var width = docEl.getBoundingClientRect().width;
+            if (width / dpr > 750) {
+                width = 750 * dpr;
+            }
+            var rem = width / 10;
+            docEl.style.fontSize = rem + 'px';
+            flexible.rem = win.rem = rem;
+        }
+        win.addEventListener('resize', function() {
+            clearTimeout(tid);
+            tid = setTimeout(refreshRem, 300);
+        }, false);
+        win.addEventListener('pageshow', function(e) {
+            if (e.persisted) {
+                clearTimeout(tid);
+                tid = setTimeout(refreshRem, 300);
+            }
+        }, false);
+        if (doc.readyState === 'complete') {
+            doc.body.style.fontSize = 12 * dpr + 'px';
+        } else {
+            doc.addEventListener('DOMContentLoaded', function(e) {
+                doc.body.style.fontSize = 12 * dpr + 'px';
+            }, false);
+        }
+        refreshRem();
+        flexible.dpr = win.dpr = dpr;
+        flexible.refreshRem = refreshRem;
+        flexible.rem2px = function(d) {
+            var val = parseFloat(d) * this.rem;
+            if (typeof d === 'string' && d.match(/rem$/)) {
+                val += 'px';
+            }
+            return val;
+        }
+        flexible.px2rem = function(d) {
+            var val = parseFloat(d) / this.rem;
+            if (typeof d === 'string' && d.match(/px$/)) {
+                val += 'rem';
+            }
+            return val;
+        }
+    })(window, window['lib'] || (window['lib'] = {}));
+    </script>
+    <style>
+        body{
+            margin: 0;
+        }
+        [v-cloak]{
+            display: none;
+        }
+        .top-header{
+            max-width: 10rem;
+            margin: 0 auto;
+            text-align: center;
+            line-height: 44px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root" v-cloak>
+        <header class="top-header">hothub</header>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+    <script type="text/javascript">
+    var app = new Vue({
+        el: '#root'
+    })
+    </script>
+</body>
+
+</html>
